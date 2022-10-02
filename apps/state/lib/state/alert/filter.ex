@@ -13,6 +13,7 @@ defmodule State.Alert.Filter do
     |> filter_by_ids(filter_opts)
     |> filter_by_informed_entity_activity(filter_opts)
     |> filter_by_active_period(filter_opts)
+    |> filter_by_updated_range(filter_opts)
     |> Alert.by_ids()
     |> filter_alerts_by_banner(filter_opts)
     |> filter_alerts_by_lifecycles(filter_opts)
@@ -109,6 +110,16 @@ defmodule State.Alert.Filter do
     acc
   end
 
+  defp do_build_matcher({:min_updated_datetime, %DateTime{}}, acc) do
+    # filtered later
+    acc
+  end
+
+  defp do_build_matcher({:max_updated_datetime, %DateTime{}}, acc) do
+    # filtered later
+    acc
+  end
+
   defp do_build_matcher({:lifecycles, value}, acc) when is_list(value) do
     # filtered later
     acc
@@ -189,6 +200,18 @@ defmodule State.Alert.Filter do
   end
 
   defp filter_by_active_period(alert_ids, _) do
+    alert_ids
+  end
+
+  defp filter_by_updated_range(alert_ids, %{
+         min_updated_datetime: _min_dt,
+         max_updated_datetime: _max_dt
+       }) do
+    # FIXME -
+    alert_ids
+  end
+
+  defp filter_by_updated_range(alert_ids, _) do
     alert_ids
   end
 

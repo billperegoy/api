@@ -3,7 +3,7 @@ defmodule ApiWeb.AlertController do
   alias State.{Alert, Alert.InformedEntityActivity}
 
   @activity_filters ~w(activity)
-  @non_activity_filters ~w(id direction_id facility route route_type stop trip banner datetime lifecycle severity)
+  @non_activity_filters ~w(id direction_id facility route route_type stop trip banner datetime lifecycle severity min_updated_datetime max_updated_datetime)
   @filters @activity_filters ++ @non_activity_filters
   @pagination_opts ~w(offset limit order_by)a
   @includes ~w(stops routes trips facilities)
@@ -276,6 +276,20 @@ defmodule ApiWeb.AlertController do
   defp do_build_query({"datetime", iso_dt}, acc) do
     case DateTime.from_iso8601(iso_dt) do
       {:ok, dt, _} -> Map.put(acc, :datetime, dt)
+      _ -> acc
+    end
+  end
+
+  defp do_build_query({"min_updated_datetime", iso_dt}, acc) do
+    case DateTime.from_iso8601(iso_dt) do
+      {:ok, dt, _} -> Map.put(acc, :min_updated_datetime, dt)
+      _ -> acc
+    end
+  end
+
+  defp do_build_query({"max_updated_datetime", iso_dt}, acc) do
+    case DateTime.from_iso8601(iso_dt) do
+      {:ok, dt, _} -> Map.put(acc, :max_updated_datetime, dt)
       _ -> acc
     end
   end

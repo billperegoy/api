@@ -28,6 +28,8 @@ defmodule State.Alert do
           optional(:facilities) => [Model.Facility.id() | nil],
           optional(:activities) => [Model.Alert.activity()],
           optional(:datetime) => DateTime.t(),
+          optional(:min_updated_datetime) => DateTime.t(),
+          optional(:max_updated_datetime) => DateTime.t(),
           optional(:severity) => [Model.Alert.severity() | nil]
         }
 

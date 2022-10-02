@@ -105,6 +105,16 @@ defmodule ApiWeb.AlertControllerTest do
       assert index_data(conn, %{"datetime" => DateTime.to_iso8601(tomorrow)}) == []
     end
 
+    test "can filter by min/max datetime", %{conn: conn} do
+      now = DateTime.utc_now()
+      tomorrow = Timex.shift(now, days: 1)
+
+      refute index_data(conn, %{
+               "min_updated_datetime" => DateTime.to_iso8601(now),
+               "max_updated_datetime" => DateTime.to_iso8601(tomorrow)
+             }) == []
+    end
+
     test "can filter by banner", %{conn: conn} do
       alerts =
         for i <- 1..2 do
